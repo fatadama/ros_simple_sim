@@ -1,0 +1,4 @@
+<launch>
+  <!-- Primary world node -->
+  <node pkg="simple_sim" type="world" name="sim" output="screen"/>
+</launch>
