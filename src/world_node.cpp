@@ -1,8 +1,15 @@
 #include <ros/ros.h>
 #include <std_msgs/Float64MultiArray.h>
 #include <simple_sim/world.h>
+#include "simple_sim/initVehicle.h"
 
 void dummycallback(const std_msgs::Float64MultiArray::ConstPtr& arr){
+  return;
+}
+
+void initVehicleCallback(simple_sim::initVehicle::Request &req,
+    simple_sim::initVehicle::Response &res)
+{
   return;
 }
 
@@ -17,6 +24,8 @@ int main(int argc, char** argv){
   // placeholder world object
   world worldObj;
 
+  // init vehicle service
+  ros::ServiceServer service = node.advertiseService("initVehicle",initVehicleCallback);
   // subscribe to simple_vel messages
   ros::Subscriber sub = node.subscribe("simple_vel", 1, dummycallback);
   // set rate
