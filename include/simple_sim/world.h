@@ -4,6 +4,9 @@
 #include <vector>
 
 namespace simple_sim_world{
+  //! convert longitude (gamma) and latitude (phi) to Euler parameters
+  void longLat2quat(double longitude, double latitude, std::vector <double>& quat);
+  void quat2longLat(std::vector <double> quat, double& longitude, double& latitude);
 
   /*! A generic vehicle class used by a world object for truth histories */
   class vehicle{
@@ -22,7 +25,7 @@ namespace simple_sim_world{
   public:
     world();
   private:
-    void init_vehicle(long id);  //!< Initialize a vehicle
+    void init_vehicle(long id);  //!< Initialize a vehicle at a random long/lat
     std::vector <vehicle> trackedVehicles; //!< list of vehicles that are known to this object
   };
 
