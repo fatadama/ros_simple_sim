@@ -6,6 +6,8 @@ void dummycallback(const std_msgs::Float64MultiArray::ConstPtr& arr){
   return;
 }
 
+using namespace simple_sim_world;
+
 int main(int argc, char** argv){
   // run ros
   ros::init(argc,argv,"simple_world");

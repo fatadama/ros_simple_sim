@@ -2,13 +2,17 @@
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
+#include <ctime>
+#include <cstdio>
 
-world::world(){
+simple_sim_world::world::world(){
+  // seed the RNG
+  srand(time(NULL));
   // DEBUG init a vehicle
   init_vehicle((long)1);
 }
 
-void world::init_vehicle(long id){
+void simple_sim_world::world::init_vehicle(long id){
   // random longitude
   double phi = ( float(rand())/float(RAND_MAX) )*2.0*M_PI-M_PI;
   // random latitude
@@ -19,7 +23,7 @@ void world::init_vehicle(long id){
   trackedVehicles[0].debug_print();
 }
 
-vehicle::vehicle(){
+simple_sim_world::vehicle::vehicle(){
   // random ID
   long idi = long(rand());
   // random longitude
@@ -30,7 +34,7 @@ vehicle::vehicle(){
   vehicle(idi,phi,gamma);
 }
 
-vehicle::vehicle(long idin, double longitude, double latitude){
+simple_sim_world::vehicle::vehicle(long idin, double longitude, double latitude){
   // store id
   id = idin;
   // trace of the DCM
@@ -43,7 +47,7 @@ vehicle::vehicle(long idin, double longitude, double latitude){
   quat.push_back(0.5*sin(longitude)*(1+cos(latitude))/coef);
 }
 
-void vehicle::debug_print(){
+void simple_sim_world::vehicle::debug_print(){
   std::cout<< " This is vehicle: "<< id <<"\n";
   std::cout<< " Current quaternion: " << quat[0] << "," << quat[1] << ","
    << quat[2] << "," << quat[3] << "\n";
