@@ -12,12 +12,13 @@ namespace simple_sim_world{
   class vehicle{
   public:
     vehicle();  //!< Constructor for random initial longitude/latitude
-    vehicle(long idin,double longitude, double latitude); //!< constructor
+    vehicle(long idin,double longitude, double latitude, double theta); //!< constructor
     void debug_print();  //!< Debugging function that prints current state
   private:
     std::vector <double> quat; //!< orientation described by Euler parameters, scalar first
     double u;     //!< speed
-    double theta; //!< heading
+    double omega; //!< heading rate (rads)
+    double theta; //!< heading (rad)
     long id;      //!< unique identifier
   };
 

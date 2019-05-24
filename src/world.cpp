@@ -57,14 +57,21 @@ simple_sim_world::vehicle::vehicle(){
   double phi = ( float(rand())/float(RAND_MAX) )*2.0*M_PI-M_PI;
   // random latitude
   double gamma = ( float(rand())/float(RAND_MAX) )*M_PI-0.5*M_PI;
+  // random heading
+  double theta = ( float(rand())/float(RAND_MAX) )*2.0*M_PI-M_PI;
   // call standard Constructor
-  vehicle(idi,phi,gamma);
+  vehicle(idi,phi,gamma,theta);
 }
 
-simple_sim_world::vehicle::vehicle(long idin, double longitude, double latitude){
+simple_sim_world::vehicle::vehicle(long idin, double longitude, double latitude, double thetain){
   // store id
   id = idin;
   longLat2quat(longitude,latitude,quat);
+  // heading
+  theta = thetain;
+  // zero speed and turn rate
+  u = 0.0;
+  omega = 0.0;
 }
 
 void simple_sim_world::vehicle::debug_print(){
@@ -89,8 +96,10 @@ void simple_sim_world::world::init_vehicle(long id){
   double phi = ( float(rand())/float(RAND_MAX) )*2.0*M_PI-M_PI;
   // random latitude
   double gamma = ( float(rand())/float(RAND_MAX) )*M_PI-0.5*M_PI;
+  // random heading
+  double theta = ( float(rand())/float(RAND_MAX) )*2.0*M_PI-M_PI;
   // store vehicle
-  trackedVehicles.push_back(vehicle(id,phi,gamma));
+  trackedVehicles.push_back(vehicle(id,phi,gamma,theta));
   // call print debug_print
   trackedVehicles[0].debug_print();
 }
