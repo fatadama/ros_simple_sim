@@ -3,17 +3,17 @@
 #include <simple_sim/world.h>
 #include "simple_sim/initVehicle.h"
 
+using namespace simple_sim_world;
+
 void dummycallback(const std_msgs::Float64MultiArray::ConstPtr& arr){
   return;
 }
 
-void initVehicleCallback(simple_sim::initVehicle::Request &req,
+bool initVehicleCallback(simple_sim::initVehicle::Request &req,
     simple_sim::initVehicle::Response &res)
 {
-  return;
+  return true;
 }
-
-using namespace simple_sim_world;
 
 int main(int argc, char** argv){
   // run ros
