@@ -1,6 +1,10 @@
+#include <iostream>
 #include <ros/ros.h>
 #include <std_msgs/Float64MultiArray.h>
-#include <simple_sim/world.h>
+// boost for boost::bind passing extra arguments
+#include <boost/bind/bind.hpp>
+
+#include "simple_sim/world.h"
 #include "simple_sim/initVehicle.h"
 
 using namespace simple_sim_world;
@@ -10,8 +14,10 @@ void dummycallback(const std_msgs::Float64MultiArray::ConstPtr& arr){
 }
 
 bool initVehicleCallback(simple_sim::initVehicle::Request &req,
-    simple_sim::initVehicle::Response &res)
+    simple_sim::initVehicle::Response &res, int& dummy)
 {
+  // initialize world object with id from req
+  std::cout<< " Got here with int " << dummy << " \n";
   return true;
 }
 
@@ -25,7 +31,10 @@ int main(int argc, char** argv){
   world worldObj;
 
   // init vehicle service
-  ros::ServiceServer service = node.advertiseService("initVehicle",initVehicleCallback);
+  int i = 0;
+  ros::ServiceServer service = node.advertiseService<simple_sim::initVehicle::Request,
+      simple_sim::initVehicle::Response>("initVehicle",
+    boost::bind(initVehicleCallback,_1,_2, i));
   // subscribe to simple_vel messages
   ros::Subscriber sub = node.subscribe("simple_vel", 1, dummycallback);
   // set rate
