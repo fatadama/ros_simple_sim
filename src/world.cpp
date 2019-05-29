@@ -57,14 +57,21 @@ simple_sim_world::vehicle::vehicle(){
   double phi = ( float(rand())/float(RAND_MAX) )*2.0*M_PI-M_PI;
   // random latitude
   double gamma = ( float(rand())/float(RAND_MAX) )*M_PI-0.5*M_PI;
+  // random heading
+  double theta = ( float(rand())/float(RAND_MAX) )*2.0*M_PI-M_PI;
   // call standard Constructor
-  vehicle(idi,phi,gamma);
+  vehicle(idi,phi,gamma,theta);
 }
 
-simple_sim_world::vehicle::vehicle(long idin, double longitude, double latitude){
+simple_sim_world::vehicle::vehicle(long idin, double longitude, double latitude, double thetain){
   // store id
   id = idin;
   longLat2quat(longitude,latitude,quat);
+  // heading
+  theta = thetain;
+  // zero speed and turn rate
+  u = 0.0;
+  omega = 0.0;
 }
 
 void simple_sim_world::vehicle::debug_print(){
@@ -77,20 +84,37 @@ void simple_sim_world::vehicle::debug_print(){
    std::cout << " Equivalent lon/lat: " << lon << "," << lat << "\n";
 }
 
+long simple_sim_world::vehicle::get_id()
+{
+  return id;
+}
+
 simple_sim_world::world::world(){
   // seed the RNG
   srand(time(NULL));
-  // DEBUG init a vehicle
-  init_vehicle((long)1);
 }
 
-void simple_sim_world::world::init_vehicle(long id){
+void simple_sim_world::world::init_vehicle(long id)
+{
   // random longitude
   double phi = ( float(rand())/float(RAND_MAX) )*2.0*M_PI-M_PI;
   // random latitude
   double gamma = ( float(rand())/float(RAND_MAX) )*M_PI-0.5*M_PI;
+  // random heading
+  double theta = ( float(rand())/float(RAND_MAX) )*2.0*M_PI-M_PI;
   // store vehicle
-  trackedVehicles.push_back(vehicle(id,phi,gamma));
-  // call print debug_print
-  trackedVehicles[0].debug_print();
+  trackedVehicles.push_back(vehicle(id,phi,gamma,theta));
+  // HACK call print debug_print
+  trackedVehicles[trackedVehicles.size()-1].debug_print();
+}
+
+bool simple_sim_world::world::is_known_vehicle(long id)
+{
+  for (int i = 0;i<trackedVehicles.size();i++)
+  {
+    if (id == trackedVehicles[i].get_id()){
+      return true;
+    }
+  }
+  return false;
 }
