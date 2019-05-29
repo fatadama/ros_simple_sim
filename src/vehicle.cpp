@@ -12,15 +12,30 @@ int main(int argc, char* argv[]){
   ros::ServiceClient client = node.serviceClient<simple_sim::initVehicle>("initVehicle");
   // client request object
   simple_sim::initVehicle srv;
+  //
   // set ID
-  srv.request.id = 1;
-  if (client.call(srv))
-  {
-    ROS_INFO("Received %d from initVehicle service\n",srv.response.success);
-  }
-  else
-  {
-    ROS_INFO("No service response");
+  srv.request.id = 0;
+  while (true){
+    if (client.call(srv))
+    {
+      if (srv.response.success){
+        // accept the id
+        ROS_INFO("Initializing with ID %d\n",srv.request.id);
+        break;
+      }
+      else{
+        ROS_INFO("Incrementing from ID %d\n",srv.request.id);
+        // sleep
+        ros::Duration(0.5).sleep();
+        // increment ID and try again
+        srv.request.id++;
+      }
+    }
+    else
+    {
+      ROS_INFO("No service response");
+      break;
+    }
   }
   return 0;
 }

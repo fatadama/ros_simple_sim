@@ -14,6 +14,7 @@ namespace simple_sim_world{
     vehicle();  //!< Constructor for random initial longitude/latitude
     vehicle(long idin,double longitude, double latitude, double theta); //!< constructor
     void debug_print();  //!< Debugging function that prints current state
+    long get_id();        //!< Return the id
   private:
     std::vector <double> quat; //!< orientation described by Euler parameters, scalar first
     double u;     //!< speed
@@ -25,8 +26,9 @@ namespace simple_sim_world{
   class world{
   public:
     world();
-  private:
     void init_vehicle(long id);  //!< Initialize a vehicle at a random long/lat
+    bool is_known_vehicle(long id); //!< Return true if the id is in the list of trackedVehicles
+  private:
     std::vector <vehicle> trackedVehicles; //!< list of vehicles that are known to this object
   };
 
