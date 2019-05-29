@@ -199,3 +199,6 @@ include_directories(
 
 add_executable(world src/world_node.cpp src/world.cpp)
 target_link_libraries(world ${catkin_LIBRARIES})
+
+add_executable(vehicle src/vehicle.cpp)
+target_link_libraries(vehicle ${catkin_LIBRARIES})

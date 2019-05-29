@@ -17,7 +17,7 @@ bool initVehicleCallback(simple_sim::initVehicle::Request &req,
     simple_sim::initVehicle::Response &res, int& dummy)
 {
   // initialize world object with id from req
-  std::cout<< " Got here with int " << dummy << " \n";
+  std::cout<< " Got here with id: " << (int)req.id << " \n";
   return true;
 }
 
