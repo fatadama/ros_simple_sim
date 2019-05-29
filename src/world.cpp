@@ -89,7 +89,30 @@ long simple_sim_world::vehicle::get_id()
   return id;
 }
 
-simple_sim_world::world::world(){
+void simple_sim_world::vehicle::get_state(std::vector <double>& beta,double& thet,double& ui, double& omeg)
+{
+  //copy quaternion
+  for(int i = 0;i<beta.size();i++)
+  {
+    beta[i] = quat[i];
+    if (i == 3)
+    {
+      break;
+    }
+  }
+  for(int i = beta.size();i<4;i++)
+  {
+    beta.push_back(quat[i]);
+  }
+  thet = theta;
+  ui = u;
+  omeg = omega;
+  return;
+}
+
+simple_sim_world::world::world(double timein){
+  // set the time
+  t = timein;
   // seed the RNG
   srand(time(NULL));
 }
@@ -117,4 +140,27 @@ bool simple_sim_world::world::is_known_vehicle(long id)
     }
   }
   return false;
+}
+
+void simple_sim_world::world::step(double timenow)
+{
+  // compute dt
+  double dt = timenow - t;
+  std::cout << "step print: t = " << timenow << " " << trackedVehicles.size() << " tracked vehicles\n";
+  // loop over each vehicle
+  for(int i = 0;i<trackedVehicles.size();i++)
+  {
+    // allocate state
+    std::vector<double> x(7,0.0);
+    // propagated state
+    std::vector<double> xprop(7,0.0);
+    // extract the current state
+    trackedVehicles[i].get_state(x,x[4],x[5],x[6]);
+
+    std::cout << "Vehicle " << i << " | time " << t << ": x = " << x[0] << ","
+     << x[1] << "," << x[2] << "," << x[3] << "," << x[4] << "," << x[5] << ","
+     << x[6] << "," << x[7] << std::endl;
+  }
+  // update the time
+  t = timenow;
 }

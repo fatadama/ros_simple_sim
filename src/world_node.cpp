@@ -42,7 +42,7 @@ int main(int argc, char** argv){
   ros::NodeHandle node;
 
   // placeholder world object
-  world worldObj;
+  world worldObj(ros::Time::now().toSec());
 
   // init vehicle service
   int i = 0;
@@ -62,6 +62,8 @@ int main(int argc, char** argv){
       //reset
       loopCounter = 0;
     }
+    // integrate each vehicle to the current time
+    worldObj.step(ros::Time::now().toSec());
     // spin once
     ros::spinOnce();
     // sleep to try to get steady execution

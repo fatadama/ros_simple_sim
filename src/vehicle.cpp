@@ -25,7 +25,7 @@ int main(int argc, char* argv[]){
       }
       else{
         ROS_INFO("Incrementing from ID %d\n",srv.request.id);
-        // sleep
+        // sleep to avoid spamming
         ros::Duration(0.5).sleep();
         // increment ID and try again
         srv.request.id++;
@@ -37,5 +37,8 @@ int main(int argc, char* argv[]){
       break;
     }
   }
+
+  // TODO add a service to terminal vehicle at exit
+
   return 0;
 }

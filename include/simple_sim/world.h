@@ -13,8 +13,9 @@ namespace simple_sim_world{
   public:
     vehicle();  //!< Constructor for random initial longitude/latitude
     vehicle(long idin,double longitude, double latitude, double theta); //!< constructor
-    void debug_print();  //!< Debugging function that prints current state
+    void debug_print();   //!< Debugging function that prints current state
     long get_id();        //!< Return the id
+    void get_state(std::vector <double>& beta,double& thet,double& u, double& omega);     //!< Extract state information for integration
   private:
     std::vector <double> quat; //!< orientation described by Euler parameters, scalar first
     double u;     //!< speed
@@ -25,11 +26,13 @@ namespace simple_sim_world{
 
   class world{
   public:
-    world();
+    world(double timein);
     void init_vehicle(long id);  //!< Initialize a vehicle at a random long/lat
     bool is_known_vehicle(long id); //!< Return true if the id is in the list of trackedVehicles
+    void step(double timenow);  //!< Perform Euler integration for dt seconds
   private:
     std::vector <vehicle> trackedVehicles; //!< list of vehicles that are known to this object
+    double t;  //!< Current time
   };
 
 };
