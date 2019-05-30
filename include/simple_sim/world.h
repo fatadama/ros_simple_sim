@@ -30,9 +30,11 @@ namespace simple_sim_world{
     void init_vehicle(long id);  //!< Initialize a vehicle at a random long/lat
     bool is_known_vehicle(long id); //!< Return true if the id is in the list of trackedVehicles
     void step(double timenow);  //!< Perform Euler integration for dt seconds
+    unsigned int get_num_vehicles();    //!< Return the number of tracked vehicles
   private:
     std::vector <vehicle> trackedVehicles; //!< list of vehicles that are known to this object
-    double t;  //!< Current time
+    double t;  //!< Current time relative to t0
+    double t0; //!< Initial time
   };
 
 };

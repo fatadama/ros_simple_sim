@@ -111,8 +111,9 @@ void simple_sim_world::vehicle::get_state(std::vector <double>& beta,double& the
 }
 
 simple_sim_world::world::world(double timein){
-  // set the time
-  t = timein;
+  // set the times
+  t0 = timein;
+  t = 0.0;
   // seed the RNG
   srand(time(NULL));
 }
@@ -145,8 +146,8 @@ bool simple_sim_world::world::is_known_vehicle(long id)
 void simple_sim_world::world::step(double timenow)
 {
   // compute dt
-  double dt = timenow - t;
-  std::cout << "step print: t = " << timenow << " " << trackedVehicles.size() << " tracked vehicles\n";
+  double dt = timenow - t0 - t;
+  std::cout << "step print: t = " << timenow-t0 << " " << trackedVehicles.size() << " tracked vehicles\n";
   // loop over each vehicle
   for(int i = 0;i<trackedVehicles.size();i++)
   {
@@ -162,5 +163,10 @@ void simple_sim_world::world::step(double timenow)
      << x[6] << "," << x[7] << std::endl;
   }
   // update the time
-  t = timenow;
+  t = timenow-t0;
+}
+
+unsigned int simple_sim_world::world::get_num_vehicles()
+{
+  return (unsigned int)(trackedVehicles.size());
 }
