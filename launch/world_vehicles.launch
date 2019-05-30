@@ -1,0 +1,9 @@
+<!-- Launch a world node and two test vehicles to debug vehicle propagation issues -->
+<launch>
+  <!-- Primary world node -->
+  <node pkg="simple_sim" type="world" name="sim" output="screen"/>
+  <!-- Simple vehicle 1 node -->
+  <node pkg="simple_sim" type="vehicle" name="vehicle1" output="screen"/>
+  <!-- Simple vehicle 2 node -->
+  <node pkg="simple_sim" type="vehicle" name="vehicle2" output="screen"/>
+</launch>
