@@ -8,6 +8,8 @@
 int main(int argc, char* argv[]){
   ros::init(argc,argv,"vehicle");
   ros::NodeHandle node;
+  // create publisher to send simple_vel messages
+  //ros::Publisher velocity_publisher = node.advertise<std::msgs::Float64MultiArray>("simple_vel",100);
   // create service client
   ros::ServiceClient client = node.serviceClient<simple_sim::initVehicle>("initVehicle");
   // client request object
