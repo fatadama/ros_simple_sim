@@ -38,7 +38,7 @@ int main(int argc, char* argv[]){
     }
   }
 
-  // TODO add a service to terminal vehicle at exit
+  // TODO add a service to terminate vehicle at exit
 
   return 0;
 }

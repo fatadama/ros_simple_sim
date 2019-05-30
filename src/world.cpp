@@ -110,6 +110,35 @@ void simple_sim_world::vehicle::get_state(std::vector <double>& beta,double& the
   return;
 }
 
+void::simple_sim_world::vehicle::propagate(double dt){
+  // delta state
+  std::vector<double> dx(5,0.0);
+  // compute "angular velocity" for Earth-constrained velocity
+  double w2 = -u*sin(theta);
+  double w3 = u*cos(theta);
+  // propagate the non-control state elements
+  dx[0] = dt*0.5*(-quat[2]*w2-quat[3]*w3);
+  dx[1] = dt*0.5*(-quat[3]*w2+quat[2]*w3);
+  dx[2] = dt*0.5*(quat[0]*w2-quat[1]*w3);
+  dx[3] = dt*0.5*(quat[1]*w2+quat[0]*w3);
+  dx[4] = dt*omega;
+  // update the state
+  theta += dx[4];
+  double normv = 0.0; // quaternion norm for renormalization
+  for(int i = 0;i<4;i++)
+  {
+    quat[i] += dx[i];
+    normv += quat[i]*quat[i];
+  }
+  normv = sqrt(normv);
+  // renormalize quaternion
+  for(int i = 0;i<4;i++)
+  {
+    quat[i] /= normv;
+  }
+  return;
+}
+
 simple_sim_world::world::world(double timein){
   // set the times
   t0 = timein;
@@ -147,7 +176,7 @@ void simple_sim_world::world::step(double timenow)
 {
   // compute dt
   double dt = timenow - t0 - t;
-  std::cout << "step print: t = " << timenow-t0 << " " << trackedVehicles.size() << " tracked vehicles\n";
+  std::cout << "step print: t = " << timenow-t0 << " dt = " << dt << " " << trackedVehicles.size() << " tracked vehicles\n";
   // loop over each vehicle
   for(int i = 0;i<trackedVehicles.size();i++)
   {
@@ -155,12 +184,17 @@ void simple_sim_world::world::step(double timenow)
     std::vector<double> x(7,0.0);
     // propagated state
     std::vector<double> xprop(7,0.0);
-    // extract the current state
+    // extract the current state (which includes control terms for convenience)
     trackedVehicles[i].get_state(x,x[4],x[5],x[6]);
+    trackedVehicles[i].propagate(dt);
+    trackedVehicles[i].get_state(xprop,xprop[4],xprop[5],xprop[6]);
 
     std::cout << "Vehicle " << i << " | time " << t << ": x = " << x[0] << ","
      << x[1] << "," << x[2] << "," << x[3] << "," << x[4] << "," << x[5] << ","
-     << x[6] << "," << x[7] << std::endl;
+     << x[6] << std::endl;
+     std::cout << "Vehicle " << i << " | time " << t << ": x = " << xprop[0] << ","
+      << xprop[1] << "," << xprop[2] << "," << xprop[3] << "," << xprop[4]
+      << std::endl;
   }
   // update the time
   t = timenow-t0;

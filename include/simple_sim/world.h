@@ -15,6 +15,7 @@ namespace simple_sim_world{
     vehicle(long idin,double longitude, double latitude, double theta); //!< constructor
     void debug_print();   //!< Debugging function that prints current state
     long get_id();        //!< Return the id
+    void propagate(double dt);  //!< Propagate for dt seconds using Euler integration
     void get_state(std::vector <double>& beta,double& thet,double& u, double& omega);     //!< Extract state information for integration
   private:
     std::vector <double> quat; //!< orientation described by Euler parameters, scalar first

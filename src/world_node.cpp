@@ -31,8 +31,7 @@ bool initVehicleCallback(simple_sim::initVehicle::Request &req,
     // if the ID is already in use, return false
     res.success = false;
   }
-  // HACK
-  ROS_INFO("CALLBACK: %u tracked vehicles\n",worldOb.get_num_vehicles());
+  // HACK set a nonzero velocity
   // return true to denote successful completion of service
   return true;
 }
@@ -51,7 +50,7 @@ int main(int argc, char** argv){
       simple_sim::initVehicle::Response>("initVehicle",
     boost::bind(initVehicleCallback,_1,_2, boost::ref(worldObj)));
   // subscribe to simple_vel messages
-  //ros::Subscriber sub = node.subscribe("simple_vel", 1, dummycallback);
+  ros::Subscriber sub = node.subscribe("simple_vel", 1, dummycallback);
   // set rate
   ros::Rate r(2); // 10 hz
   int loopCounter = 0;
@@ -65,7 +64,6 @@ int main(int argc, char** argv){
     }
     // integrate each vehicle to the current time
     worldObj.step(ros::Time::now().toSec());
-    ROS_INFO("%u tracked vehicles\n",worldObj.get_num_vehicles());
     // spin once
     ros::spinOnce();
     // sleep to try to get steady execution
