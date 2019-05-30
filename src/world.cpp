@@ -139,6 +139,12 @@ void::simple_sim_world::vehicle::propagate(double dt){
   return;
 }
 
+void  simple_sim_world::vehicle::set_control(double ui,double thetai)
+{
+  u = ui;
+  theta = thetai;
+}
+
 simple_sim_world::world::world(double timein){
   // set the times
   t0 = timein;
@@ -203,4 +209,17 @@ void simple_sim_world::world::step(double timenow)
 unsigned int simple_sim_world::world::get_num_vehicles()
 {
   return (unsigned int)(trackedVehicles.size());
+}
+
+void simple_sim_world::world::update_velocity(double u, double theta, long id)
+{
+  for(int i = 0;i<trackedVehicles.size();i++)
+  {
+    // check for match
+    if (id==trackedVehicles[i].get_id())
+    {
+      // update
+      trackedVehicles[i].set_control(u,theta);
+    }
+  }
 }
