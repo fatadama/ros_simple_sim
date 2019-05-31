@@ -24,6 +24,7 @@ namespace simple_sim_world{
     double omega; //!< heading rate (rads)
     double theta; //!< heading (rad)
     long id;      //!< unique identifier
+    double R;     //!< Earth radius to use (m)
   };
 
   class world{

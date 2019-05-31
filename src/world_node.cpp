@@ -11,9 +11,8 @@
 using namespace simple_sim_world;
 
 void simpleVelocityCallback(const simple_sim::simple_vel::ConstPtr& msg, world& worldOb){
-//void simpleVelocityCallback(const boost::shared_ptr<simple_sim::simple_vel const> &msg, world& worldOb){
-  ROS_INFO("u = %f, Omega = %f, id = %d\n",msg->u,msg->omega,msg->id);
-  //worldOb.update_velocity(msg.u,msg.omega,(long)msg.id);
+// update velocity info
+  worldOb.update_velocity(msg->u,msg->omega,(long)msg->id);
   return;
 }
 
@@ -62,7 +61,8 @@ int main(int argc, char** argv){
   int loopCounter = 0;
   while (ros::ok()){
     loopCounter++;
-    if (loopCounter==10){
+    if (loopCounter==int(rate_hz)) // 1 Hz output
+    {
       // print status
       //ROS_INFO("This is the world node.\n");
       //reset

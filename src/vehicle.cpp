@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 #include <ros/ros.h>
 #include "simple_sim/initVehicle.h"
 #include "simple_sim/simple_vel.h"
@@ -52,8 +53,8 @@ int main(int argc, char* argv[]){
   while (ros::ok())
   {
     simple_sim::simple_vel msg;
-    msg.u = 1.0;
-    msg.omega = 0.0;
+    msg.u = 1.0+cos(0.01*ros::Time::now().toSec());
+    msg.omega = 0.1;
     msg.id = id;
     velocity_publisher.publish(msg);
     // spin and loop

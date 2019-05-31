@@ -72,6 +72,8 @@ simple_sim_world::vehicle::vehicle(long idin, double longitude, double latitude,
   // zero speed and turn rate
   u = 0.0;
   omega = 0.0;
+  // Earth radius
+  R = 6371e6;
 }
 
 void simple_sim_world::vehicle::debug_print(){
@@ -114,8 +116,8 @@ void::simple_sim_world::vehicle::propagate(double dt){
   // delta state
   std::vector<double> dx(5,0.0);
   // compute "angular velocity" for Earth-constrained velocity
-  double w2 = -u*sin(theta);
-  double w3 = u*cos(theta);
+  double w2 = -u/R*sin(theta);
+  double w3 = u/R*cos(theta);
   // propagate the non-control state elements
   dx[0] = dt*0.5*(-quat[2]*w2-quat[3]*w3);
   dx[1] = dt*0.5*(-quat[3]*w2+quat[2]*w3);
@@ -139,10 +141,10 @@ void::simple_sim_world::vehicle::propagate(double dt){
   return;
 }
 
-void  simple_sim_world::vehicle::set_control(double ui,double thetai)
+void simple_sim_world::vehicle::set_control(double ui,double omegai)
 {
   u = ui;
-  theta = thetai;
+  omega = omegai;
 }
 
 simple_sim_world::world::world(double timein){
@@ -182,7 +184,6 @@ void simple_sim_world::world::step(double timenow)
 {
   // compute dt
   double dt = timenow - t0 - t;
-  std::cout << "step print: t = " << timenow-t0 << " dt = " << dt << " " << trackedVehicles.size() << " tracked vehicles\n";
   // loop over each vehicle
   for(int i = 0;i<trackedVehicles.size();i++)
   {
@@ -194,13 +195,6 @@ void simple_sim_world::world::step(double timenow)
     trackedVehicles[i].get_state(x,x[4],x[5],x[6]);
     trackedVehicles[i].propagate(dt);
     trackedVehicles[i].get_state(xprop,xprop[4],xprop[5],xprop[6]);
-
-    std::cout << "Vehicle " << i << " | time " << t << ": x = " << x[0] << ","
-     << x[1] << "," << x[2] << "," << x[3] << "," << x[4] << "," << x[5] << ","
-     << x[6] << std::endl;
-     std::cout << "Vehicle " << i << " | time " << t << ": x = " << xprop[0] << ","
-      << xprop[1] << "," << xprop[2] << "," << xprop[3] << "," << xprop[4]
-      << std::endl;
   }
   // update the time
   t = timenow-t0;
