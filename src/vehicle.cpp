@@ -49,7 +49,7 @@ int main(int argc, char* argv[]){
   id = srv.request.id;
   ros::Rate loop_rate(rate_hz);
   // HACK test velocity message
-  while (true)
+  while (ros::ok())
   {
     simple_sim::simple_vel msg;
     msg.u = 1.0;
