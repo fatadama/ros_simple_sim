@@ -203,6 +203,3 @@ target_link_libraries(world ${catkin_LIBRARIES})
 
 add_executable(vehicle src/vehicle.cpp)
 target_link_libraries(vehicle ${catkin_LIBRARIES})
-
-add_executable(test_settings src/test_settings.cpp src/settings.cpp)
-target_link_libraries(test_settings ${catkin_LIBRARIES} ${Boost_LIBRARIES})
