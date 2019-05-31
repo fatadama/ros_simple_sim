@@ -10,10 +10,10 @@
 
 using namespace simple_sim_world;
 
-void simpleVelocityCallback(const simple_sim::simple_vel &msg, world& worldOb){
+void simpleVelocityCallback(const simple_sim::simple_vel::ConstPtr& msg, world& worldOb){
 //void simpleVelocityCallback(const boost::shared_ptr<simple_sim::simple_vel const> &msg, world& worldOb){
-  ROS_INFO("u = %f, Omega = %f, id = %d\n",msg.u,msg.omega,msg.id);
-  worldOb.update_velocity(msg.u,msg.omega,(long)msg.id);
+  ROS_INFO("u = %f, Omega = %f, id = %d\n",msg->u,msg->omega,msg->id);
+  //worldOb.update_velocity(msg.u,msg.omega,(long)msg.id);
   return;
 }
 
@@ -52,7 +52,7 @@ int main(int argc, char** argv){
     boost::bind(initVehicleCallback,_1,_2, boost::ref(worldObj)));
   // subscribe to simple_vel messages
   ros::Subscriber sub = node.subscribe<simple_sim::simple_vel>("simple_vel", 100,
-    boost::bind(simpleVelocityCallback,_1,boost::ref(worldObj)));
+    boost::bind(&simpleVelocityCallback,_1,boost::ref(worldObj)));
   // set rate
   ros::Rate r(2); // 10 hz
   int loopCounter = 0;
