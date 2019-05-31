@@ -2,5 +2,5 @@
   <!-- Parameter specifying the settings path -->
   <param name="simple_sim/settings_path" type="str" value="$(find simple_sim)/settings.ini" />
   <!-- Primary world node -->
-  <node pkg="simple_sim" type="world" name="sim" output="screen"/>
+  <node pkg="simple_sim" type="test_settings" name="test_settings" output="screen"/>
 </launch>

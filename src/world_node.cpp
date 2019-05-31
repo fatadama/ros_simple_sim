@@ -4,9 +4,9 @@
 // boost for boost::bind passing extra arguments
 #include <boost/bind/bind.hpp>
 
-#include "simple_sim/world.h"
-#include "simple_sim/initVehicle.h"
-#include "simple_sim/simple_vel.h"
+#include "simple_sim/world.h"       //!< World object
+#include "simple_sim/initVehicle.h" //!< Vehicle initialization service
+#include "simple_sim/simple_vel.h"  //!< Vehicle simple velocity message
 
 using namespace simple_sim_world;
 
@@ -39,7 +39,7 @@ bool initVehicleCallback(simple_sim::initVehicle::Request &req,
 
 int main(int argc, char** argv){
   // run ros
-  ros::init(argc,argv,"simple_world");
+  ros::init(argc,argv,"world");
   // roc handle object
   ros::NodeHandle node;
 

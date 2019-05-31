@@ -15,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
+FIND_PACKAGE(Boost COMPONENTS program_options REQUIRED)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -116,6 +117,7 @@ catkin_package(
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
+  ${Boost_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -201,3 +203,6 @@ target_link_libraries(world ${catkin_LIBRARIES})
 
 add_executable(vehicle src/vehicle.cpp)
 target_link_libraries(vehicle ${catkin_LIBRARIES})
+
+add_executable(test_settings src/test_settings.cpp src/settings.cpp)
+target_link_libraries(test_settings ${catkin_LIBRARIES} ${Boost_LIBRARIES})
