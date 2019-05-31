@@ -1,6 +1,6 @@
 <launch>
   <!-- Parameter specifying the settings path -->
-  <param name="simple_sim/settings_path" type="str" value="$(find simple_sim)/settings.ini" />
+  <param name="simple_sim/rate_hz" type="double" value="2.0" />
   <!-- Simple vehicle 1 node -->
   <node pkg="simple_sim" type="vehicle" name="vehicle1" output="screen"/>
   <!-- Simple vehicle 2 node -->

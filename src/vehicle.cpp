@@ -9,6 +9,11 @@
 int main(int argc, char* argv[]){
   ros::init(argc,argv,"vehicle");
   ros::NodeHandle node;
+
+  // get the global rate
+  double rate_hz;
+  node.param("simple_sim/rate_hz",rate_hz,10.0);
+
   // create publisher to send simple_vel messages
   ros::Publisher velocity_publisher = node.advertise<simple_sim::simple_vel>("simple_vel",100);
   // create service client
@@ -42,7 +47,7 @@ int main(int argc, char* argv[]){
     }
   }
   id = srv.request.id;
-  ros::Rate loop_rate(10);
+  ros::Rate loop_rate(rate_hz);
   // HACK test velocity message
   while (true)
   {

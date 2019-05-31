@@ -43,6 +43,10 @@ int main(int argc, char** argv){
   // roc handle object
   ros::NodeHandle node;
 
+  // get the rate_hz parameter
+  double rate_hz;
+  node.param("simple_sim/rate_hz",rate_hz,10.0);
+
   // placeholder world object
   world worldObj(ros::Time::now().toSec());
 
@@ -54,7 +58,7 @@ int main(int argc, char** argv){
   ros::Subscriber sub = node.subscribe<simple_sim::simple_vel>("simple_vel", 100,
     boost::bind(&simpleVelocityCallback,_1,boost::ref(worldObj)));
   // set rate
-  ros::Rate r(2); // 10 hz
+  ros::Rate r(rate_hz); // 10 hz
   int loopCounter = 0;
   while (ros::ok()){
     loopCounter++;
